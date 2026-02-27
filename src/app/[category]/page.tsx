@@ -1,73 +1,127 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getProductsByCategory, getAllCategories, products } from '@/data/products';
+import { formatPrice } from '@/types/product';
 
-// Dummy data for now
-const products = [
-  { id: '1', name: "Oversized Cotton Shirt", price: "€79", category: "Women", color: "White" },
-  { id: '2', name: "Wide-Leg Wool Trousers", price: "€115", category: "Women", color: "Black" },
-  { id: '3', name: "Minimalist Leather Tote", price: "€195", category: "Accessories", color: "Tan" },
-  { id: '4', name: "Textured Knit Sweater", price: "€89", category: "Men", color: "Navy" },
-  { id: '5', name: "Silk Blend Slip Dress", price: "€125", category: "Women", color: "Black" },
-  { id: '6', name: "Tailored Blazer", price: "€150", category: "Women", color: "Charcoal" },
-];
+const categoryTitles: Record<string, string> = {
+  women: "Women's Collection",
+  men: "Men's Collection",
+  accessories: 'Accessories',
+  new: 'New Arrivals',
+  bestsellers: 'Bestsellers',
+};
+
+const categoryDescriptions: Record<string, string> = {
+  women: 'Discover our women\'s collection — timeless pieces designed with intention and crafted for longevity.',
+  men: 'Explore our men\'s collection — refined essentials that balance structured tailoring with effortless comfort.',
+  accessories: 'Complete your look with our curated accessories — leather goods and finishing details made to last.',
+  new: 'The latest additions to AMILOU STUDIO. Explore freshly arrived pieces from our newest collection.',
+  bestsellers: 'Our most loved pieces. Discover the styles that define AMILOU STUDIO.',
+};
+
+const validCategories = ['women', 'men', 'accessories', 'new', 'bestsellers'];
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  const title = categoryTitles[category];
+  if (!title) return { title: 'Collection' };
+  return {
+    title,
+    description: categoryDescriptions[category],
+  };
+}
+
+export function generateStaticParams() {
+  return validCategories.map((category) => ({ category }));
+}
 
 export default async function CategoryPage({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
-  const categoryParams = await params;
-  const category = categoryParams.category;
-  
-  // Basic filtering for demo
-  const filteredProducts = category === 'new' 
-    ? products 
-    : products.filter(p => p.category.toLowerCase() === category.toLowerCase() || category === 'all');
+  const { category } = await params;
+
+  if (!validCategories.includes(category)) {
+    notFound();
+  }
+
+  const filteredProducts = getProductsByCategory(category);
+  const title = categoryTitles[category] || category;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="mb-8">
+        <ol className="flex items-center space-x-2 text-xs text-gray-500">
+          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
+          <li>/</li>
+          <li className="text-brand capitalize">{title}</li>
+        </ol>
+      </nav>
+
       {/* Category Header */}
-      <div className="mb-12 text-center md:text-left">
-        <h1 className="text-3xl font-light tracking-widest uppercase mb-4">
-          {category === 'new' ? 'New Arrivals' : category}
-        </h1>
+      <div className="mb-12">
+        <h1 className="text-3xl font-light tracking-widest uppercase mb-4">{title}</h1>
         <p className="text-gray-500 font-light max-w-2xl">
-          Explore our latest collection of {category.toLowerCase()} clothing. 
-          Designed with intention and crafted for longevity.
+          {categoryDescriptions[category]}
         </p>
       </div>
 
-      {/* Filters & Sort (Visual only for now) */}
+      {/* Product count */}
       <div className="flex justify-between items-center mb-8 border-b border-brand-gray pb-4">
-        <div className="flex space-x-6 text-sm">
-          <button className="uppercase tracking-wider hover:text-gray-500 transition-colors">Filter</button>
-        </div>
-        <div className="flex space-x-6 text-sm">
-          <span className="text-gray-400 hidden sm:inline">{filteredProducts.length} Items</span>
-          <button className="uppercase tracking-wider hover:text-gray-500 transition-colors">Sort</button>
-        </div>
+        <span className="text-sm text-gray-500">{filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'}</span>
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10 sm:gap-y-12">
         {filteredProducts.map((product) => (
           <Link href={`/product/${product.id}`} key={product.id} className="group">
             <div className="relative aspect-[3/4] w-full bg-brand-light mb-4 overflow-hidden">
-              <div className="absolute inset-0 bg-[#f5f5f5] transition-transform duration-700 group-hover:scale-105" />
+              <Image
+                src={product.images[0]}
+                alt={product.name}
+                fill
+                className="object-cover transition-opacity duration-500 group-hover:opacity-0"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              <Image
+                src={product.hoverImage}
+                alt={`${product.name} — alternate view`}
+                fill
+                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              {product.isNew && (
+                <span className="absolute top-3 left-3 bg-brand text-white text-[10px] uppercase tracking-widest px-2 py-1">New</span>
+              )}
+              {product.isBestseller && !product.isNew && (
+                <span className="absolute top-3 left-3 bg-brand-accent text-white text-[10px] uppercase tracking-widest px-2 py-1">Bestseller</span>
+              )}
             </div>
             <div className="flex flex-col space-y-1">
               <div className="flex justify-between items-start">
                 <h3 className="text-sm font-medium pr-4">{product.name}</h3>
-                <span className="text-sm">{product.price}</span>
+                <span className="text-sm whitespace-nowrap">{formatPrice(product.price)}</span>
               </div>
               <span className="text-xs text-gray-500">{product.color}</span>
             </div>
           </Link>
         ))}
       </div>
-      
+
       {filteredProducts.length === 0 && (
-        <div className="py-24 text-center text-gray-500 font-light">
-          No products found in this category.
+        <div className="py-24 text-center">
+          <p className="text-gray-500 font-light text-lg mb-4">No products found in this category.</p>
+          <Link href="/" className="text-sm border-b border-brand pb-1 hover:text-gray-500 transition-colors uppercase tracking-wider">
+            Back to Home
+          </Link>
         </div>
       )}
     </div>
