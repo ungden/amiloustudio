@@ -11,7 +11,14 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "https://amiloustudio.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "AMILOU STUDIO | Modern Minimalist Fashion",
     template: "%s | AMILOU STUDIO",
@@ -22,7 +29,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://amiloustudio.com",
     siteName: "AMILOU STUDIO",
     title: "AMILOU STUDIO | Modern Minimalist Fashion",
     description:
