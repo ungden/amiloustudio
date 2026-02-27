@@ -92,10 +92,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     images: [
       "https://images.unsplash.com/photo-1638643391904-9b551ba91eaa?w=800&q=80",
-      "https://images.unsplash.com/photo-1614975059251-992f11792571?w=800&q=80",
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80",
       "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=800&q=80",
     ],
-    hoverImage: "https://images.unsplash.com/photo-1614975059251-992f11792571?w=800&q=80",
+    hoverImage: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80",
     description:
       "A richly textured crew-neck sweater knit from extra-fine merino wool. The subtle basket-weave pattern adds visual depth without overwhelming the minimalist aesthetic. An elevated essential for layering.",
     details: [
@@ -198,7 +198,7 @@ export const products: Product[] = [
     images: [
       "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80",
       "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&q=80",
-      "https://images.unsplash.com/photo-1434389677669-e08b4cda3a20?w=800&q=80",
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80",
     ],
     hoverImage: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&q=80",
     description:
@@ -222,11 +222,11 @@ export const products: Product[] = [
     colorHex: "#111111",
     sizes: ["S", "M", "L", "XL"],
     images: [
-      "https://images.unsplash.com/photo-1544923246-77307dd270cb?w=800&q=80",
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-      "https://images.unsplash.com/photo-1515100122522-6eab4b0e3254?w=800&q=80",
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80",
+      "https://images.unsplash.com/photo-1608063615781-e2ef8c73d114?w=800&q=80",
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80",
     ],
-    hoverImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    hoverImage: "https://images.unsplash.com/photo-1608063615781-e2ef8c73d114?w=800&q=80",
     description:
       "A commanding overcoat in double-faced wool. The clean, structured silhouette draws on mid-century architectural principles — sharp lines softened by premium materials. A wardrobe cornerstone.",
     details: [
@@ -302,7 +302,7 @@ export const products: Product[] = [
     images: [
       "https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80",
       "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-      "https://images.unsplash.com/photo-1585856331426-d7b3f3b7b585?w=800&q=80",
+      "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=800&q=80",
     ],
     hoverImage: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
     description:
@@ -334,6 +334,6 @@ export function getAllCategories(): string[] {
 }
 
 export const heroImages = {
-  main: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600&q=80",
+  main: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&q=80",
   editorial: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80",
 };

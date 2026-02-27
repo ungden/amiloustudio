@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-[4/5] w-full order-2 md:order-1">
               <Image
-                src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&q=80"
+                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&q=80"
                 alt="Fashion editorial showcasing premium fabrics and tailoring"
                 fill
                 className="object-cover"
